@@ -99,72 +99,79 @@ void setup()
 
 void loop()
 {  
-	nowTime = millis();
-	if(!digitalRead(BUTTONPIN)){
-	    delay(10);
-	    if(!digitalRead(BUTTONPIN)){
-	        m++;
-	        n = m%4;
-	        showNum2(n, 1);
-	    }
-	}
-	if(n == 3){
-	    fastTrainer();
-	}
-	if(ledOpenFlag){
-		openFan();
-		writeLedSeven(8);
-		if(nowTime - ledOpenTime > 5000){
-		    writeLedSeven(0);
-		    closeFan();
-		    ledOpenFlag = false;
-		} 
-	}
-	if(talkFlag){
-	    talkTemperature();
-	    talkFlag = false;
-	}
+	// nowTime = millis();
+	// if(!digitalRead(BUTTONPIN)){
+	//     delay(10);
+	//     if(!digitalRead(BUTTONPIN)){
+	//         m++;
+	//         n = m%4;
+	//         showNum2(n, 1);
+	//     }
+	// }
+	// if(n == 3){
+	//     fastTrainer();
+	// }
+	// if(ledOpenFlag){
+	// 	openFan();
+	// 	writeLedSeven(8);
+	// 	if(nowTime - ledOpenTime > 5000){
+	// 	    writeLedSeven(0);
+	// 	    closeFan();
+	// 	    ledOpenFlag = false;
+	// 	} 
+	// }
+	// if(talkFlag){
+	//     talkTemperature();
+	//     talkFlag = false;
+	// }
 
-	if(rfid.findCard(PICC_REQIDL, str) == MI_OK){ // 寻卡
-		//防冲突检测,读取卡序列号
-	 	if (rfid.anticoll(str) == MI_OK){
+	// if(rfid.findCard(PICC_REQIDL, str) == MI_OK){ // 寻卡
+	// 	//防冲突检测,读取卡序列号
+	//  	if (rfid.anticoll(str) == MI_OK){
 	      
-	    	Serial.print("The card's number is  : ");
-	        //显示卡序列号
-		    for(int i = 0; i < 4; i++){
-		        Serial.print(0x0F & (str[i] >> 4),HEX);
-		        Serial.print(0x0F & str[i],HEX);
-		    }
-		    Serial.println("");
-		    memcpy(rfid.serNum,str,5);
-		    //register card id to system
-	        unsigned long tempSerNum;
-	        tempSerNum = (((unsigned long)str[0] << 24) + ((unsigned long)str[1] << 16) + ((unsigned long)str[2] << 8) + str[3]);
+	//     	Serial.print("The card's number is  : ");
+	//         //显示卡序列号
+	// 	    for(int i = 0; i < 4; i++){
+	// 	        Serial.print(0x0F & (str[i] >> 4),HEX);
+	// 	        Serial.print(0x0F & str[i],HEX);
+	// 	    }
+	// 	    Serial.println("");
+	// 	    memcpy(rfid.serNum,str,5);
+	// 	    //register card id to system
+	//         unsigned long tempSerNum;
+	//         tempSerNum = (((unsigned long)str[0] << 24) + ((unsigned long)str[1] << 16) + ((unsigned long)str[2] << 8) + str[3]);
 
-	          //选卡，返回卡容量（锁定卡片，防止多次读写）
-		    rfid.selectTag(rfid.serNum);
-		    checkCardNumber(tempSerNum);
-		    rfid.halt();
+	//           //选卡，返回卡容量（锁定卡片，防止多次读写）
+	// 	    rfid.selectTag(rfid.serNum);
+	// 	    checkCardNumber(tempSerNum);
+	// 	    rfid.halt();
 
-	    }  
-	}
-	if(analogRead(INFRAREDPIN) < 10){
-	    delay(5);
-	    if(analogRead(INFRAREDPIN) < 10){
-	        while(analogRead(INFRAREDPIN) < 10){
-	            // statement
-	        }
-	        flowCount++;
-	        showNum2(flowCount,2);
-	        openRecord();
-	    }
-	}
+	//     }  
+	// }
+	// if(analogRead(INFRAREDPIN) < 10){
+	//     delay(5);
+	//     if(analogRead(INFRAREDPIN) < 10){
+	//         while(analogRead(INFRAREDPIN) < 10){
+	//             // statement
+	//         }
+	//         flowCount++;
+	//         showNum2(flowCount,2);
+	//         openRecord();
+	//     }
+	// }
 
-	if(n == 2){
-	    uint16_t tDistance = filter(getDistance());
-	    talkNumNVC(tDistance, 1);
-	    delay(500);
+	// if(n == 2){
+	//     uint16_t tDistance = filter(getDistance());
+	//     talkNumNVC(tDistance, 1);
+	//     delay(500);
+	// }
+	for(int i=0; i<10; i++){
+	    
+	    Serial.print(analogRead(TEMPERATUREPIN));
+	    Serial.print(' ');
+	    delay(1000);
 	}
+	Serial.println();
 
 }
 
